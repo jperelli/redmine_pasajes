@@ -1,0 +1,53 @@
+<h2>Pasajes</h2>
+
+<h3>Realizar un pasaje</h3>
+<% form_tag({:controller => "pasajes", :action => "show"}, :method => "post", :class => "tabular") do %>
+  <div class="box">
+    <p>    
+      <%= label_tag(:rev, "Revision:") %>
+      <% ultima_rev = @repository.changesets.find(:first, :order => "committed_on DESC" ) %>
+      <%
+         if ultima_rev.nil? 
+           ultima_rev = "HEAD"
+         else
+           ultima_rev = ultima_rev.revision
+         end 
+      %>
+      <%= text_field_tag(:rev, ultima_rev) %>
+    </p>
+    <p>
+      <%= label_tag(:simulacion, "Simulacion:") %>
+      <%= check_box_tag(:simulacion, "simulacion", true) %>
+    </p>
+    <%= hidden_field_tag(:project_id, @project.identifier) %>
+    <p>
+      <%= submit_tag("Pasar a desarrollo") %>
+    </p>
+  </div>
+<% end %>
+
+
+<h3>Historial</h3>
+<%= will_paginate @logs %>
+<table>
+<tr>
+  <th>Fecha</th>
+  <th>Usuario</th>
+  <th>Revision</th>
+  <th>Simula</th>
+  <th>Código de retorno</th>
+</tr>
+<%
+   @logs.each do |log|
+   usuario = User.find(log.uid) 
+%>
+<tr>
+  <td><%= log.date %></td>
+  <td><%= link_to usuario.name, {:controller => 'users', :action => 'show', :id => usuario}, :class => 'icon icon-user' %></td>
+  <td><a href="/projects/<%= log.pid %>/repository/revisions/<%= log.revid %>"><%= log.revid %></a></td>
+  <td><%= log.simulacion %></td>
+  <td><%= log.success %></td>
+</tr>
+<% end %>
+</table>
+<%= will_paginate @logs %>

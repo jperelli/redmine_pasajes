@@ -1,0 +1,17 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+one:
+  id: 1
+  pid: MyString
+  uid: 1
+  revid: 1
+  date: 2012-10-05 11:42:08
+  simulacion: false
+  success: false
+two:
+  id: 2
+  pid: MyString
+  uid: 1
+  revid: 1
+  date: 2012-10-05 11:42:08
+  simulacion: false
+  success: false
